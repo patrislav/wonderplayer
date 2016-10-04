@@ -1,0 +1,11 @@
+{
+  "name": "wonderplayer",
+  "productName": "WonderPlayer",
+  "description": "A wonderful media player",
+  "version": "0.0.1",
+  "author": {
+    "name": "Patryk Kalinowski",
+    "email": "patrislav7@gmail.com"
+  },
+  "license": "ISC"
+}
