@@ -3,7 +3,7 @@ const { Menu } = require('electron')
 const emptyFunction = () => {}
 
 module.exports = function ApplicationMenu(params = {}) {
-  const { onOpenFile } = params
+  const { onOpenFile, onAddSubtitles } = params
 
   const template = [
     {
@@ -12,6 +12,10 @@ module.exports = function ApplicationMenu(params = {}) {
         {
           label: 'Open file',
           click: onOpenFile || emptyFunction
+        },
+        {
+          label: 'Add subtitles',
+          click: onAddSubtitles || emptyFunction
         }
       ]
     }

@@ -5,6 +5,7 @@ import Video from './Video'
 export default class App extends React.Component {
   state = {
     videoPath: null,
+    subtitles: null,
     autoplay: false
   }
 
@@ -15,14 +16,20 @@ export default class App extends React.Component {
         this.setState({ videoPath, autoplay: true })
       }
     })
+
+    ipc.on('load-subtitles', (event, subtitles) => {
+      if (subtitles) {
+        this.setState({ subtitles })
+      }
+    })
   }
 
   render() {
-    const { videoPath, autoplay } = this.state
+    const { videoPath, autoplay, subtitles } = this.state
 
     return (
       <div style={{ height: '100%' }}>
-        <Video url={videoPath} autoplay={autoplay} />
+        <Video url={videoPath} autoplay={autoplay} subtitles={subtitles} />
       </div>
     )
   }

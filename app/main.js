@@ -1,4 +1,6 @@
-// const {app, BrowserWindow} = require('electron')
+const fs = require('fs')
+const srt2vtt = require('srt-to-vtt')
+const concatStream = require('concat-stream')
 const { app, dialog, BrowserWindow, Menu, ipcMain } = require('electron')
 const createApplicationMenu = require('./applicationMenu')
 
@@ -11,7 +13,8 @@ function createWindow() {
   mainWindow = new BrowserWindow({width: 800, height: 600})
 
   const menu = createApplicationMenu({
-    onOpenFile: openFileDialog
+    onOpenFile: openFileDialog,
+    onAddSubtitles: openSubtitlesDialog
   })
   Menu.setApplicationMenu(menu)
 
@@ -41,6 +44,24 @@ function openFileDialog() {
 
   dialog.showOpenDialog(mainWindow, options, paths => {
     mainWindow.webContents.send('open-file', paths)
+  })
+}
+
+function openSubtitlesDialog() {
+  const options = {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Subtites', extensions: ['srt']},
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  }
+
+  dialog.showOpenDialog(mainWindow, options, paths => {
+    if (paths && paths[0]) {
+      fs.createReadStream(paths[0]).pipe(srt2vtt()).pipe(concatStream(buffer => {
+        mainWindow.webContents.send('load-subtitles', 'data:text/vtt;base64,' + buffer.toString('base64'))
+      }))
+    }
   })
 }
 

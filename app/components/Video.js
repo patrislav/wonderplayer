@@ -62,12 +62,15 @@ export default class Video extends React.Component {
   }
 
   render() {
-    const { url, autoplay } = this.props
+    const { url, autoplay, subtitles } = this.props
 
     return (
       <video ref={c => this.video = c} controls style={{ width: '100%', height: '100%' }} autoPlay={autoplay}>
         {url ? (
           <source type="video/webm" src={url} />
+        ) : null}
+        {subtitles ? (
+          <track src={subtitles} label="Subtitles" kind="subtitles" default="default" />
         ) : null}
       </video>
     )
